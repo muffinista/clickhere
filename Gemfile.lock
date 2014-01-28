@@ -3,8 +3,8 @@ GEM
   specs:
     daemons (1.1.9)
     eventmachine (1.0.3)
-    mysql (2.9.1)
     oj (2.5.4)
+    pg (0.17.1)
     rack (1.5.2)
     rack-protection (1.5.2)
       rack
@@ -23,8 +23,8 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  mysql
   oj
+  pg
   sequel
   sinatra
   thin

@@ -3,5 +3,5 @@ gem 'sinatra'
 gem 'thin'
 gem 'oj'
 gem 'sequel'
-gem "mysql"
+gem "pg"
 
