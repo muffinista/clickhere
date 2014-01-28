@@ -6,11 +6,16 @@ var style = "dots";
 
 PVector = Processing.PVector;
 
+window.addEventListener('resize', function(event){
+    setup();
+    clearScreen();
+    draw();
+});
+
 function setup() {
     createGraphics( $( window ).width(), $( window ).height() );
     background(0);
     loadPoints();
-
 
     $("#controls a").on("click", function(e) {
         e.preventDefault();
@@ -94,7 +99,8 @@ var renderPoint = function(v, z, index) {
 
         for ( var i = 0; i < foo.length && i < 5; i++ ) {
             stroke(255, i/2);
-            line(v.x, v.y, foo[i].x, foo[i].y);
+            console.log(foo[i]);
+            line(v.x, v.y, foo[i].vx * height, foo[i].vy * height);
         }
 
         r = pointValue(z);
@@ -152,13 +158,18 @@ var postPoint = function() {
     tmp.sub(center);
     mag = tmp.mag();
 
-    $.post("/point", {
-        x: x,
-        y: y,
-        z: z,
-        mag: mag,
-        vx: x/width,
-        vy: y/height
-    });
+    $.post("/point", 
+           {
+               x: x,
+               y: y,
+               z: z,
+               mag: mag,
+               vx: x/width,
+               vy: y/height
+           },
+           function(data) {
+               data = jQuery.parseJSON(data);
+               $(".stats").html(data.users + " connections");
+           });
 };
 

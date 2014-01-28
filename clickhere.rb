@@ -28,7 +28,9 @@ post '/point' do
 
   params[:users] = connections.count
   connections.each { |out| out << "data: #{Oj.dump(params, mode: :compat)}\n\n" }  
-  204 # response without entity body
+
+  Oj.dump({:users => connections.count}, mode: :compat)
+  #204 # response without entity body
 end
 
 get '/data' do

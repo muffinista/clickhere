@@ -4,4 +4,3 @@ gem 'thin'
 gem 'oj'
 gem 'sequel'
 gem "pg"
-
