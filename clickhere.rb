@@ -7,6 +7,10 @@ connections = []
 
 DB = Sequel.connect(ENV['DATABASE_URL'] || 'mysql://root@localhost/clickhere')
 
+get '/' do
+  redirect_to('/index.html')
+end
+
 get '/stream', :provides => 'text/event-stream' do
   stream :keep_open do |out|
     connections << out
@@ -30,7 +34,6 @@ post '/point' do
   connections.each { |out| out << "data: #{Oj.dump(params, mode: :compat)}\n\n" }  
 
   Oj.dump({:users => connections.count}, mode: :compat)
-  #204 # response without entity body
 end
 
 get '/data' do
