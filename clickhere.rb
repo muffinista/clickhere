@@ -8,7 +8,7 @@ connections = []
 DB = Sequel.connect(ENV['DATABASE_URL'] || 'mysql://root@localhost/clickhere')
 
 get '/' do
-  redirect_to('/index.html')
+  redirect to('/index.html')
 end
 
 get '/stream', :provides => 'text/event-stream' do
