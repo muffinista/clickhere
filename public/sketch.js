@@ -1,7 +1,7 @@
 var x, y, z, start;
 var max_size = 25;
 var drawing = false;
-window.points = [];
+window.points = (window.points || []);
 
 var style = "dots";
 
