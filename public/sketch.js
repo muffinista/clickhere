@@ -1,6 +1,7 @@
 var x, y, z, start;
 var max_size = 25;
 var drawing = false;
+window.points = [];
 
 var style = "dots";
 
@@ -32,7 +33,6 @@ function clearScreen() {
 function draw() {
     if ( drawing ) {
         z = ticks() - start;
-        //println(z);
         if ( pointValue(z) >= max_size ) {
             drawing = false;
             postPoint();
@@ -42,6 +42,15 @@ function draw() {
 
 
 function mousePressed() {
+    var cPos = $("#controls").position();
+    var hPos = $("#about").position();
+
+    if (
+        ( mouseX >= cPos.left && mouseY >= cPos.top ) ||
+        ( mouseX <= hPos.left && mouseY >= cPos.top ) ) {
+            return;
+        }
+
     drawing = true;
     start = ticks();
     x = mouseX;
@@ -53,6 +62,8 @@ function mouseReleased() {
         z = ticks() - start;
         postPoint();
     }
+    x = 0;
+    y = 0;
     drawing = false;
 }
 
@@ -86,10 +97,9 @@ var renderPoint = function(v, z, index) {
         ellipse(v.x, v.y, r, r);
         break;
     case "nodes":
-        var pts = window.points.slice(0);
-        var val = noise.perlin2(v.x, v.y);
-        foo = pts.sort(function(p) {
-            return noise.perlin2(p.x * val, p.y * val);
+        var foo = window.points.slice(0);
+        foo.sort(function(a, b) {
+            return Math.abs(v.mag - a.mag) - Math.abs(v.mag - b.mag);
         });
 
         fill(0, 0, 0, 2);
@@ -98,9 +108,8 @@ var renderPoint = function(v, z, index) {
         fill(255);
 
         for ( var i = 0; i < foo.length && i < 5; i++ ) {
-            stroke(255, i/2);
-            console.log(foo[i]);
-            line(v.x, v.y, foo[i].vx * height, foo[i].vy * height);
+            stroke(255);
+            line(v.x, v.y, foo[i].vx * width, foo[i].vy * height);
         }
 
         r = pointValue(z);
@@ -108,7 +117,6 @@ var renderPoint = function(v, z, index) {
     }
 };
 
-window.points = [];
 var renderPoints = function(points) {
     var home = new PVector(width/2, height/2);
 
@@ -119,6 +127,12 @@ var renderPoints = function(points) {
         renderHash(p, i);
     }
 };
+
+var hashToVector = function(h) {
+    var vx = parseFloat(h.vx) * width;
+    var vy = parseFloat(h.vy) * height;
+    return new PVector(vx, vy, 0);
+}
 
 var renderHash = function(p, index) {
     var vx = parseFloat(p.vx) * width;
@@ -153,11 +167,11 @@ es.onmessage = function(e) {
 var postPoint = function() {
     var tmp = new PVector(x, y);
     var center = new PVector(width/2, height/2, 0);
-    renderPoint(tmp, z);
 
-    tmp.sub(center);
-    mag = tmp.mag();
-
+    if ( x == 0 && y == 0 ) {
+        return;
+    }
+    console.log("POST POINT", x, y, drawing);
     $.post("/point", 
            {
                x: x,
@@ -171,5 +185,10 @@ var postPoint = function() {
                data = jQuery.parseJSON(data);
                $(".stats").html(data.users + " connections");
            });
+
+    renderPoint(tmp, z);
+
+    tmp.sub(center);
+    mag = tmp.mag();
 };
 
