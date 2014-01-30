@@ -102,13 +102,10 @@ var renderPoint = function(v, z, index) {
             return Math.abs(v.mag - a.mag) - Math.abs(v.mag - b.mag);
         });
 
-//        fill(0, 0, 0, 2);
-//        rect(0, 0, width, height);
-
         fill(255);
+        stroke(255);
 
         for ( var i = 0; i < foo.length && i < 5; i++ ) {
-            stroke(255);
             line(v.x, v.y, foo[i].vx * width, foo[i].vy * height);
         }
 
@@ -188,7 +185,6 @@ var postPoint = function() {
                $(".stats").html(data.users + " connections");
            });
 
-    renderPoint(tmp, z);
-
+    //renderPoint(tmp, z);
 };
 
