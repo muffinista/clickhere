@@ -121,7 +121,6 @@ var renderPoints = function(points) {
     var home = new PVector(width/2, height/2);
 
     window.points = points;
-    console.log(points);
 
     for(var i = 0; i < points.length; i++ ) {
         var p = points[i];
@@ -172,6 +171,9 @@ var postPoint = function() {
     if ( x == 0 && y == 0 ) {
         return;
     }
+    tmp.sub(center);
+    mag = tmp.mag();
+
     $.post("/point", 
            {
                x: x,
@@ -188,7 +190,5 @@ var postPoint = function() {
 
     renderPoint(tmp, z);
 
-    tmp.sub(center);
-    mag = tmp.mag();
 };
 
