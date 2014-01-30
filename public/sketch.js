@@ -171,7 +171,6 @@ var postPoint = function() {
     if ( x == 0 && y == 0 ) {
         return;
     }
-    console.log("POST POINT", x, y, drawing);
     $.post("/point", 
            {
                x: x,
