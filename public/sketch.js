@@ -121,6 +121,7 @@ var renderPoints = function(points) {
     var home = new PVector(width/2, height/2);
 
     window.points = points;
+    console.log(points);
 
     for(var i = 0; i < points.length; i++ ) {
         var p = points[i];
