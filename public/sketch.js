@@ -102,8 +102,8 @@ var renderPoint = function(v, z, index) {
             return Math.abs(v.mag - a.mag) - Math.abs(v.mag - b.mag);
         });
 
-        fill(0, 0, 0, 2);
-        rect(0, 0, width, height);
+//        fill(0, 0, 0, 2);
+//        rect(0, 0, width, height);
 
         fill(255);
 
